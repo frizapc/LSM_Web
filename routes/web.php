@@ -33,7 +33,7 @@ Route::middleware(['auth', 'EnsureKeepExam'])
         
         Route::get('/', function () {
             return view('pages/dashboard', ['courses' => Course::all()]);
-        });
+        })->name('home');
 
         Route::singleton('profile', ProfileController::class);
 
