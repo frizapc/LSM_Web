@@ -1,1 +1,607 @@
-<h1>Halo</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Learning Management System</title>
+    
+    <!-- PWA  -->
+    <meta name="theme-color" content="#6777ef"/>
+    <link rel="apple-touch-icon" href="miraclesender.jpg">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Custom CSS Styles -->
+    <style>
+      :root {
+          --purple-primary: #6a0dad;
+          --purple-secondary: #9c27b0;
+          --purple-light: #ba68c8;
+          --purple-dark: #4a148c;
+      }
+
+      html, body {
+          height: 100%;
+      }
+
+      body {
+          display: flex;
+          flex-direction: column;
+          padding-top: 56px;
+      }
+
+      .title-purple {
+          color: var(--purple-primary) !important;
+      }
+
+      .bg-purple {
+          background-color: var(--purple-primary) !important;
+      }
+
+      .sidebar {
+          background-color: var(--purple-dark);
+          width: 250px;
+          min-height: calc(100vh - 56px);
+          padding-top: 1rem;
+      }
+
+      .sidebar .nav-link {
+          color: rgba(255, 255, 255, 0.8);
+          padding: 12px 20px;
+      }
+
+      .sidebar .nav-link:hover {
+          color: white;
+          background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar .nav-link.active {
+          color: white;
+          background-color: var(--purple-secondary);
+      }
+
+      .account-set {
+          display: none;
+      }
+
+      .main-content{
+          flex: 1;
+          margin-left: 250px;
+      }
+      .main-content > div > div{
+          padding: 20px;
+      }
+      .main-wrapper{
+          min-height: calc(100vh - 112px);
+          display: flex;
+          justify-content: space-around;
+      }
+
+      .footer {
+          background-color: var(--purple-primary);
+          color: white;
+          padding: 1rem;
+      }
+
+      /* Tambahkan ini ke CSS custom Anda */
+      .course-card {
+          transition: all 0.3s ease;
+          border: 1px solid rgba(106, 13, 173, 0.1);
+          border-radius: 10px;
+          overflow: hidden;
+      }
+
+      .course-card:hover {
+          box-shadow: 0 10px 20px rgba(106, 13, 173, 0.1);
+          transform: translateY(-5px);
+      }
+
+      .hover-scale {
+          transition: transform 0.3s ease;
+      }
+
+      .hover-scale:hover {
+          transform: scale(1.03);
+      }
+
+      .bg-purple-light {
+          background-color: var(--purple-secondary);
+      }
+
+      .btn-light-purple {
+          background-color: rgba(255, 255, 255, 0.2);
+          color: white;
+          border: none;
+      }
+
+      .btn-light-purple:hover {
+          background-color: rgba(255, 255, 255, 0.3);
+          color: white;
+      }
+
+      .alert-purple {
+          background-color: rgba(106, 13, 173, 0.1);
+          border-color: rgba(106, 13, 173, 0.2);
+          color: #6a0dad;
+      }
+
+      /* Pagination styling */
+      .pagination .page-item.active .page-link {
+          background-color: #6a0dad;
+          border-color: #6a0dad;
+      }
+
+      .pagination .page-link {
+          color:rgb(8, 8, 8);
+      }
+
+      /* Sidebar */
+      .question-numbers {
+          padding: 0.5rem;
+      }
+      
+      .question-number {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0.25rem;
+          background-color: rgba(255, 255, 255, 0.1);
+          transition: all 0.2s;
+      }
+      
+      .question-number:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+      }
+      
+      .question-number.active {
+          background-color: #6a0dad;
+          color: white;
+          font-weight: bold;
+      }
+
+      .account-set{
+          margin-bottom: 4.2rem;
+      }
+
+      /* Dashboard */
+      .bi-book-half,
+      .bi-clipboard-data,
+      .bi-graph-up {
+          font-size: 2rem;
+      }
+      .bi-journal-bookmark{
+          font-size: 3rem;
+      }
+      .card-img-top{
+          height: 120px; 
+          overflow: hidden;
+      }
+      .progress{
+          height: 8px;
+      }
+      .progress-bar{
+          width: 72%;
+      }
+      .border-purple-light {
+          border-color: rgba(106, 13, 173, 0.2);
+      }
+      .bg-purple-light {
+          background-color: rgba(106, 13, 173, 0.1);
+      }
+      .bg-warning-light {
+          background-color: rgba(255, 193, 7, 0.1);
+      }
+      .bg-success-light {
+          background-color: rgba(25, 135, 84, 0.1);
+      }
+      .border-start-lg {
+          border-left-width: 4px !important;
+      }
+
+      @media (max-width: 992px) {
+          .navbar-brand {
+              font-size: 1rem;
+          }
+
+          .sidebar {
+              background-color: var(--purple-dark);
+              width: 250px;
+              height: calc(100vh - 56px); 
+              position: fixed;
+              top: 56px;
+              left: -250px;
+              transition: all 0.3s ease;
+              z-index: 1000;
+              overflow-y: auto;
+          }
+
+          .sidebar.active {
+              left: 0;
+          }
+
+          .account-set {
+              display: block;
+          }
+
+          .main-content{
+              margin-left: 0px;
+          }
+
+          .footer {
+              margin-left: 0;
+              width: 100%;
+              font-size: 0.8rem;
+          }
+      }
+    </style>
+
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-purple shadow fixed-top z-2">
+        <div class="container-fluid">
+            <button id="sidebarToggle" class="navbar-toggler me-2" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand fw-bold" href="#">
+                Learning Management System
+            </a>
+            
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i> User Name
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div>
+        <!-- Sidebar -->
+        <div class="sidebar mt-lg-5 vh-100 fixed-top z-1" id="sidebar">
+            <div class="my-2 text-center">
+                <h5 class="text-white">Menu</h5>
+            </div>
+            
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-people me-2"></i> Pengguna
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-box-seam me-2"></i> Kursus
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-file-earmark-text me-2"></i> Laporan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-gear me-2"></i> Pengaturan
+                    </a>
+                </li>
+                <div class="account-set w-100 position-absolute bottom-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-person-circle me-2"></i> Profil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </a>
+                    </li>
+                </div>
+            </ul>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="main-wrapper">
+                <!-- Page content will go here -->
+                <div class="container-fluid py-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h3 text-purple mb-0"><i class="bi bi-speedometer2 me-2"></i>Dashboard Saya</h1>
+                    </div>
+
+                    <div class="row">
+                        <!-- Kartu Kursus Aktif -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-start-lg border-purple shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="text-purple mb-0">Kursus Aktif</h5>
+                                            <div class="display-4 fw-bold text-purple">3</div>
+                                            <p class="text-muted mb-0">Kursus yang sedang Anda ikuti</p>
+                                        </div>
+                                        <div class="bg-purple-light rounded p-3">
+                                            <i class="bi bi-book-half text-purple" style="font-size: 2rem;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent border-top-0">
+                                    <a href="courses.html" class="text-purple d-flex align-items-center">
+                                        Lihat semua kursus
+                                        <i class="bi bi-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kartu Ujian Terakhir -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-start-lg border-warning shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="text-warning mb-0">Ujian Terakhir</h5>
+                                            <div class="d-flex align-items-baseline">
+                                                <div class="display-4 fw-bold text-warning">85</div>
+                                                <span class="ms-2 text-muted">/100</span>
+                                            </div>
+                                            <p class="text-muted mb-0">Nilai ujian Pemrograman Dasar</p>
+                                        </div>
+                                        <div class="bg-warning-light rounded p-3">
+                                            <i class="bi bi-clipboard-data text-warning" style="font-size: 2rem;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent border-top-0">
+                                    <a href="reports.html" class="text-warning d-flex align-items-center">
+                                        Lihat detail nilai
+                                        <i class="bi bi-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kartu Progress Belajar -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-start-lg border-success shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="text-success mb-0">Progress Belajar</h5>
+                                            <div class="display-4 fw-bold text-success">72<span class="fs-3">%</span></div>
+                                            <div class="progress mt-2" style="height: 8px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 72%"></div>
+                                            </div>
+                                            <p class="text-muted mb-0 mt-1">Kursus Pemrograman Web</p>
+                                        </div>
+                                        <div class="bg-success-light rounded p-3">
+                                            <i class="bi bi-graph-up text-success" style="font-size: 2rem;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent border-top-0">
+                                    <a href="#" class="text-success d-flex align-items-center">
+                                        Lanjutkan belajar
+                                        <i class="bi bi-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daftar Kursus Terbaru -->
+                    <div class="card shadow border-0 mt-4">
+                        <div class="card-header bg-purple text-white">
+                            <h5 class="mb-0"><i class="bi bi-book me-2"></i>Kursus Saya</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Kursus 1 -->
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100 border-purple-light">
+                                        <div class="card-img-top bg-purple-light" style="height: 150px;">
+                                            <div class="d-flex align-items-center justify-content-center h-100 text-purple">
+                                                <i class="bi bi-journal-bookmark" style="font-size: 3rem;"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title text-purple">Matematika Dasar</h5>
+                                            <p class="card-text text-muted">Belajar menyelesaikan masalah sehari-hari menggunakan matematika dasar.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="badge bg-info text-purple">Pemula</span>
+                                                <a href="course-detail.html" class="btn btn-sm btn-purple">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Kursus 2 -->
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100 border-purple-light">
+                                        <div class="card-img-top bg-purple-light" style="height: 150px;">
+                                            <div class="d-flex align-items-center justify-content-center h-100 text-purple">
+                                                <i class="bi bi-journal-bookmark" style="font-size: 3rem;"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title text-purple">IPA</h5>
+                                            <p class="card-text text-muted">Mengenal lingkungan sekitar dan proses alami.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="badge bg-warning text-purple">Menengah</span>
+                                                <a href="course-detail.html" class="btn btn-sm btn-purple">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Kursus 3 -->
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100 border-purple-light">
+                                        <div class="card-img-top bg-purple-light" style="height: 150px;">
+                                            <div class="d-flex align-items-center justify-content-center h-100 text-purple">
+                                                <i class="bi bi-journal-bookmark" style="font-size: 3rem;"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title text-purple">Bahasa Inggris</h5>
+                                            <p class="card-text text-muted">Kurus Bahasa Inggris Lanjutan untuk mengenal grammer dan percakapan.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="badge bg-danger text-purple">Lanjutan</span>
+                                                <a href="course-detail.html" class="btn btn-sm btn-purple">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aktivitas Terbaru -->
+                    <div class="card shadow border-0 mt-4">
+                        <div class="card-header bg-purple text-white">
+                            <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Aktivitas Terbaru</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        <span>Anda menyelesaikan materi "Pengenalan HTML"</span>
+                                        <small class="text-muted d-block mt-1">2 jam yang lalu</small>
+                                    </div>
+                                    <a href="#" class="btn btn-sm btn-outline-purple">Review</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="bi bi-clipboard-check text-purple me-2"></i>
+                                        <span>Anda mengerjakan ujian "Pemrograman Dasar"</span>
+                                        <small class="text-muted d-block mt-1">Kemarin, 15:32</small>
+                                    </div>
+                                    <a href="#" class="btn btn-sm btn-outline-purple">Lihat Nilai</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="bi bi-journal-text text-info me-2"></i>
+                                        <span>Materi baru tersedia: "CSS Layouting"</span>
+                                        <small class="text-muted d-block mt-1">3 hari yang lalu</small>
+                                    </div>
+                                    <a href="#" class="btn btn-sm btn-outline-purple">Pelajari</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <span class="text-white">© 2023 Muhammad Friza - 220511017</span>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <a href="#" class="text-white me-3"><i class="bi bi-shield-lock"></i> Privacy</a>
+                            <a href="#" class="text-white"><i class="bi bi-question-circle"></i> Help</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+
+    <!-- Bootstrap JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const path = window.location.pathname;
+            const navLinks = document.querySelectorAll(".nav-link");
+
+            // Reset semua active class
+            navLinks.forEach((link) => link.classList.remove("active"));
+
+            // Fungsi untuk mencocokkan link
+            function findActiveLink(selector, textMatch, iconClass) {
+                const links = document.querySelectorAll(selector);
+                links.forEach((link) => {
+                    const linkText = link.textContent.trim().toLowerCase();
+                    const hasIcon = link.querySelector(iconClass);
+
+                    if (linkText.includes(textMatch.toLowerCase()) || hasIcon) {
+                        link.classList.add("active");
+                    }
+                });
+            }
+
+            // Cek path dan set active class
+            if (path === "/" || path === "/dashboard") {
+                findActiveLink(".nav-link", "Dashboard", ".bi-speedometer2");
+            } else if (path.startsWith("/courses")) {
+                findActiveLink(".nav-link", "Kursus", ".bi-box-seam");
+            } else if (path.startsWith("/users")) {
+                findActiveLink(".nav-link", "Pengguna", ".bi-people");
+            } else if (path.startsWith("/reports")) {
+                findActiveLink(".nav-link", "Laporan", ".bi-file-earmark-text");
+            } else if (path.startsWith("/settings")) {
+                findActiveLink(".nav-link", "Pengaturan", ".bi-gear");
+            } else if (path.startsWith("/login")) {
+                findActiveLink(".nav-link", "Login", ".bi-box-arrow-in-right");
+            } else if (path.startsWith("/register")) {
+                findActiveLink(".nav-link", "Register", ".bi-person-plus");
+            } else if (path.startsWith("/profile")) {
+                console.log("Profile path detected");
+                findActiveLink(".nav-link", "Profil", ".bi-person-circle");
+            }
+
+            // Logic untuk question numbers
+            const currentPage = urlParams.get("page") || 1;
+            const questionLinks = document.querySelectorAll(".question-number");
+
+            questionLinks.forEach((link) => {
+                const questionNumber = parseInt(link.textContent);
+                const answered = localStorage.getItem(`quest${questionNumber}`);
+
+                if (questionNumber == currentPage || answered) {
+                    link.classList.add("active");
+                }
+            });
+
+            document
+                .getElementById("sidebarToggle")
+                .addEventListener("click", function () {
+                    document.querySelector(".sidebar").classList.toggle("active");
+                });
+        });
+
+    </script>
+</body>
+</html>
