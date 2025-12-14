@@ -2,27 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\ErrorHandler;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Throwable;
 
 class AuthController extends Controller
 {
-    public $errorHandler;
-
-    public function __construct(ErrorHandler $errorHandler) {
-        $this->errorHandler = $errorHandler;
-    }
-
     public function login()
     {
-        try {
-            return view('pages.auth.login');
-        } catch (Throwable $e) {
-            return $this->errorHandler->render($e);
-        }
+        return view('pages.auth.login');
     }
     
     public function authenticate(Request $request)
@@ -44,11 +32,7 @@ class AuthController extends Controller
     
     public function register()
     {
-        try{
-            return view('pages.auth.register');
-        } catch (Throwable $e) {
-            return $this->errorHandler->render($e);
-        }
+        return view('pages.auth.register');
     }
 
     public function store(Request $request)
