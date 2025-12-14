@@ -9,44 +9,41 @@ use Throwable;
 
 class ErrorHandler
 {
-    public function render(Throwable $exception, ?string $message = null)
+    public function handler(Throwable $exception, ?string $message = null)
     {
         if (request()->expectsJson()) {
-            return $this->handleJsonError($exception, $message);
+            return $this->jsonResponse($exception, $message);
         }
 
-        return $this->handleViewError($exception, $message);
+        return $this->viewResponse($exception, $message);
     }
 
-    protected function handleJsonError(Throwable $e, ?string $message = null)
+    private function jsonResponse(Throwable $e, ?string $message = null)
     {
-        $status = $this->resolveStatusCode($e);
+        $statusCode = $this->resolveStatusCode($e);
 
         return response()->json([
             'success' => false,
-            'message' => $message ?: $this->defaultMessage($status),
-            'status'  => $status,
-        ], $status);
+            'message' => $message ?: $this->defaultMessage($statusCode),
+        ], $statusCode);
     }
 
-    protected function handleViewError(Throwable $e, ?string $message = null)
+    private function viewResponse(Throwable $e, ?string $message = null)
     {
-        $status = $this->resolveStatusCode($e);
-
-        $title = $this->defaultMessage($status);
+        $statusCode = $this->resolveStatusCode($e);
 
         // Selalu gunakan 1 file error view kustom
         return response()->view('errors.custom', [
-            'title'   => $title,
-            'code'    => $status,
-            'message' => $message ?: $this->defaultMessage($status),
-        ], $status);
+            'title'   => $this->defaultMessage($statusCode),
+            'code'    => $statusCode,
+            'message' => $message ?: $this->defaultMessage($statusCode),
+        ], $statusCode);
     }
 
     /**
      * Tentukan status code berdasarkan tipe exception
      */
-    protected function resolveStatusCode(Throwable $e): int
+    private function resolveStatusCode(Throwable $e): int
     {
         if ($e instanceof HttpExceptionInterface) {
             return $e->getStatusCode();
@@ -66,7 +63,7 @@ class ErrorHandler
     /**
      * Pesan bawaan bila exception tidak memiliki message
      */
-    protected function defaultMessage(int $status): string
+    private function defaultMessage(int $status): string
     {
         return match ($status) {
             400 => 'Bad Request',
