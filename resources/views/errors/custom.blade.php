@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Error' }} | {{ $code ?? '' }}</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
-    <link href="{{ asset('icons/bootstrap-icons.min.css') }}" rel="stylesheet">
-    
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/app.min.css') }}" rel="stylesheet">
-    
+
     <style>
+        :root {
+            --purple-primary: #6a0dad;
+            --purple-secondary: #9c27b0;
+            --purple-light: #ba68c8;
+            --purple-dark: #4a148c;
+        }
         body {
+            padding: 0;
+            margin: 0;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -68,5 +67,3 @@
     </div>
 </body>
 </html>
-
-<!-- Buat url fallback agar dapat menyesuaikan user berada pada situasi tertentu seperti harus login atau kembali ke beranda -->
