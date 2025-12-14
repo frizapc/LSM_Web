@@ -20,9 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Daftarkan custom error handler Anda
+        // Daftarkan custom error handler
         $exceptions->render(function (Throwable $e) {
-            $handler = new ErrorHandler();
-            return $handler->render($e);
+            $errorHandler = new ErrorHandler();
+            return $errorHandler->handler($e);
         });
     })->create();
