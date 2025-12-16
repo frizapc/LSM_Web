@@ -37,7 +37,19 @@ Route::middleware(['auth', 'EnsureKeepExam'])
 
         Route::singleton('profile', ProfileController::class);
 
-        Route::resource('courses', CourseController::class);
+        // Route::resource('courses', CourseController::class);
+        Route::prefix('courses')
+            ->name('courses.')
+            ->controller(CourseController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index'); // Page
+                Route::get('/all', 'all')->name('all');
+                Route::post('/store', 'store')->name('store');
+                Route::get('/{course}/show', 'show')->name('show'); // Page
+                Route::get('/{course}/detail', 'detail')->name('detail');
+                Route::put('/{course}/update', 'update')->name('update');
+                Route::delete('/{course}/delete', 'delete')->name('delete');
+            });
         
         Route::resource('courses.materials', MaterialController::class)
             ->except(['index', 'show']);
