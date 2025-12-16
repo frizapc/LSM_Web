@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -58,6 +60,15 @@ class CourseController extends Controller
         return view('pages.courses.show', compact('course'));
     }
 
+    public function detail(Course $course)
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Kursus ditemukan',
+            'data' => new CourseResource($course),
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -94,7 +105,7 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function delete(Course $course)
     {
         Gate::authorize('delete', $course);
         $course->delete();
