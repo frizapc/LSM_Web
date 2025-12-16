@@ -23,6 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // Daftarkan custom error handler
         $exceptions->render(function (Throwable $e) {
             $errorHandler = new ErrorHandler();
-            return $errorHandler->handler($e);
+            return $errorHandler->handler($e, $e->getMessage());
         });
     })->create();
