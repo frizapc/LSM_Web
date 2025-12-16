@@ -71,5 +71,5 @@
 @endsection
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/courses-index.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/courses-index.css') }}">
 @endpush

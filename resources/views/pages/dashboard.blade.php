@@ -162,5 +162,5 @@
 @endsection
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/dashboard.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 @endpush

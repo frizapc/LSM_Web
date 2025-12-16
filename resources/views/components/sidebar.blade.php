@@ -44,7 +44,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/courses">
+            <a class="nav-link" href="{{ route('courses.index') }}">
                 <i class="bi bi-box-seam me-2"></i> Kursus
             </a>
         </li>
@@ -98,11 +98,11 @@
 </div>
 
 @push('styles')
-<link href="{{ asset('css/sidebar.min.css') }}" rel="stylesheet">
+<link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
-<script src="{{ asset('js/sidebar.min.js') }}"></script>
+<script src="{{ asset('js/sidebar.js') }}"></script>
 @endpush
 
 
