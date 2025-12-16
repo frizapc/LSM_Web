@@ -17,6 +17,69 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+
+    <!-- Edit Course Modal  -->
+    <div id="edit-course" class="modal fade" tabindex="-1" aria-labelledby="edit-course" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="card shadow border-0">
+                    <div class="card-header bg-purple text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-pencil-square me-2"></i>Edit Kursus
+                        </h5>
+                    </div>
+                    
+                    <div class="card-body">
+                        <form method="POST">
+                            @csrf
+                            @method('PUT')
+                            
+                            <div class="mb-3">
+                                <label for="name" class="form-label text-purple">Nama Kursus</label>
+                                <input type="text" class="form-control border-purple @error('name') is-invalid @enderror" 
+                                    id="name" name="name">
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="level" class="form-label text-purple">Level</label>
+                                <select class="form-select border-purple @error('level') is-invalid @enderror" 
+                                        id="level" name="level">
+                                    <option>Pilih Level</option>
+                                    <option value="Pemula">Pemula</option>
+                                    <option value="Menengah">Menengah</option>
+                                    <option value="Mahir">Mahir</option>
+                                </select>
+                                @error('level')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label text-purple">Deskripsi</label>
+                                <textarea class="form-control border-purple @error('description') is-invalid @enderror" 
+                                        id="description" name="description" rows="3"></textarea>
+                                @error('description')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="submit btn text-purple me-2" data-bs-dismiss="modal">
+                                    <i class="bi bi-arrow-left me-1"></i> Batalkan
+                                </button>
+                                <button type="button" class="back btn text-purple">
+                                    <i class="bi bi-save me-1"></i> Simpan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="row">
         <!-- Kolom Foto -->
@@ -117,11 +180,11 @@
 
                                     <div class="mt-4">
                                         @can(['update', 'delete'], $course)
-                                        <a class="btn btn-purple w-100" href="{{ route('courses.edit', $course->id) }}">
+                                        <button type="button" class="btn btn-outline-purple w-100" data-bs-toggle="modal" data-bs-target="#edit-course">
                                             <i class="bi bi-pencil-square me-1"></i> Edit Kursus
-                                        </a>
+                                        </button>
                                         
-                                        <form action="{{ route('courses.destroy', $course->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('courses.delete', $course->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-purple w-100 mt-2"
@@ -391,5 +454,48 @@
 @endsection
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/courses-show.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/courses-show.css') }}">
+@endpush
+
+@push('scripts')
+<script>
+    const routes = {
+        detail: "{{ route('courses.detail', $course->id) }}",
+    }
+</script>
+<script src="{{ asset('js/helpers/formCheck.js') }}"></script>
+<script>
+    let editCourseModal = document.getElementById('edit-course');
+    let editCourseForm = editCourseModal.querySelector('form')
+
+    editCourseModal.addEventListener('shown.bs.modal', async function () {
+        try {
+            let course = await fetchAndFillForm(routes.detail, editCourseForm);
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+    function fetchAndFillForm(url, form) {
+        return fetch(url, {
+            headers: { Accept: 'application/json' }
+        })
+        .then(async res => {
+            const body = await res.json();
+            if (!res.ok) throw body;
+            return body;
+        })
+        .then(({ data }) => {
+            if (!data || !form) return null;
+
+            Object.entries(data).forEach(([key, value]) => {
+                if (form.elements[key]) {
+                form.elements[key].value = value ?? '';
+                }
+            });
+
+            return data;
+        });
+    }
+</script>
 @endpush
